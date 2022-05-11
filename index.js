@@ -42,13 +42,20 @@ async function run() {
             res.send(inventory);
         });
 
+        //add inventory api
+        app.post('/manageinventory', async (req, res) => {
+            const newInventory = req.body;
+            const result = await inventoryCollection.insertOne(newInventory);
+            res.send(result);
+        });
+
         //delete specific inventory from database
         app.delete('/manageinventory/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await inventoryCollection.deleteOne(query);
             res.send(result);
-        })
+        });
     }
     finally {
 
