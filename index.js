@@ -27,12 +27,27 @@ async function run() {
             res.send(inventories);
         });
 
+        app.get('/manageinventory', async (req, res) => {
+            const query = {};
+            const cursor = inventoryCollection.find(query);
+            const inventories = await cursor.toArray();
+            res.send(inventories);
+        });
+
         //load specific inventory data from database
         app.get('/inventory/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const inventory = await inventoryCollection.findOne(query);
             res.send(inventory);
+        });
+
+        //delete specific inventory from database
+        app.delete('/manageinventory/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await inventoryCollection.deleteOne(query);
+            res.send(result);
         })
     }
     finally {
