@@ -53,6 +53,7 @@ async function run() {
         app.put('/inventory/:id', async (req, res) => {
             const id = req.params.id;
             const updatedUser = req.body;
+            // console.log(typeof (updatedUser.quantity));
             const filter = { _id: ObjectId(id) };
             const options = { upsert: true };
 
