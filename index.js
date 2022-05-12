@@ -49,6 +49,22 @@ async function run() {
             res.send(result);
         });
 
+        // update inventory
+        app.put('/inventory/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedUser = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+
+            const updateDoc = {
+                $set: {
+                    quantity: updatedUser.quantity
+                },
+            };
+            const result = await inventoryCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        })
+
         //delete specific inventory from database
         app.delete('/manageinventory/:id', async (req, res) => {
             const id = req.params.id;
