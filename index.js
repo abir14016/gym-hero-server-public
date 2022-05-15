@@ -18,6 +18,7 @@ async function run() {
     try {
         await client.connect();
         const inventoryCollection = client.db("gymHero").collection("inventory");
+        const myInventoryCollection = client.db("gymHero").collection("myInventories");
 
         //load all inventory data from database to server
         app.get('/inventory', async (req, res) => {
@@ -71,6 +72,32 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await inventoryCollection.deleteOne(query);
+            res.send(result);
+        });
+
+
+        //myInventories collection API
+
+
+        app.get('/myInventories', async (req, res) => {
+            const email = req.query.email;
+            console.log(email);
+            const query = { email: email };
+            const cursor = myInventoryCollection.find(query);
+            const myInventories = await cursor.toArray();
+            res.send(myInventories);
+        });
+
+        app.post('/myInventories', async (req, res) => {
+            const myInventory = req.body;
+            const result = await myInventoryCollection.insertOne(myInventory);
+            res.send(result);
+        });
+
+        app.delete('/myInventories/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await myInventoryCollection.deleteOne(query);
             res.send(result);
         });
     }
