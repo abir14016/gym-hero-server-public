@@ -49,6 +49,7 @@ async function run() {
             res.send({ accessToken });
         });
 
+
         //load only 6 inventories at home page
         app.get('/inventory', async (req, res) => {
             const query = {};
